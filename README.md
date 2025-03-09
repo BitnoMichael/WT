@@ -4,7 +4,7 @@ Repository for university subject web technologies
 
 Project structure:
 
-my_project/
+my_project/  
 ├── bin/                    # Исполняемые файлы и скрипты  
 ├── config/                 # Конфигурационные файлы приложения  
 │   ├── packages/           # Конфигурации для пакетов  
