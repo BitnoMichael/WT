@@ -16,6 +16,14 @@
             <input type="text" id="textfield" name="textfield">
             <button type="submit">Сортировать</button>
         </form>
+        <?php if (!empty($cities)): ?>
+            <h2>Отсортированные города:</h2>
+            <ul>
+                <?php foreach ($cities as $city): ?>
+                    <li><?= htmlspecialchars($city) ?></li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
     </main>
 </body>
 </html>

@@ -1,34 +1,17 @@
 <?php
-function parseListOfCities($str):array 
-{
-    $cities = explode( ",", $str, PHP_INT_MAX);
-    $result = array();
-    foreach ($cities as $city)
-    {
-        $canAdd = true;
-        $city = trim($city);
-        if (!ctype_upper($city[0]))
-        {
-            $canAdd = false;
-        }
-        for ($i = 1; $i < strlen($city); $i++)
-        {
-            if (ctype_upper($city[$i]))
-            {
-                $canAdd = false;
-            }
-        }
-        if ($canAdd)
-        {
-            array_push($result, $city);
-        }
-    }
-    return array_unique($result, SORT_STRING);
-}  
 
-function sortCities($array):array
-{
-    natcasesort($array);
-    return $array;
+require '../src/Controller/HomeController.php';
+require '../src/Controller/CitiesController.php';
+require 'Router.php';
+$homeController = new HomeController();
+$citiesController = new CitiesController();
+$router = new Router();
+
+$router->addRoute('/', 'GET', $homeController, 'showMainPage'); 
+$router->addRoute('/', 'POST', $citiesController, 'getSortedCities'); 
+
+try {
+    $router->dispatch($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);
+} catch (Exception $e) {
+    echo "Error: " . $e->getMessage();
 }
-phpinfo();
