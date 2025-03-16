@@ -1,8 +1,8 @@
 <?php
 
-require '../src/Controller/HomeController.php';
-require '../src/Controller/CitiesController.php';
-require 'Router.php';
+require 'src/Controller/HomeController.php';
+require 'src/Controller/CitiesController.php';
+require 'config/routes/Router.php';
 $homeController = new HomeController();
 $citiesController = new CitiesController();
 $router = new Router();
