@@ -4,7 +4,7 @@ Repository for university subject web technologies
 
 Project structure:
 
-my_project/ 
+my_project/   
 ├── config/                 # Конфигурационные файлы приложения  
 │   └── routes/             # Определение маршрутов  
 ├── public/                 # Публичная директория (доступна через веб)  
