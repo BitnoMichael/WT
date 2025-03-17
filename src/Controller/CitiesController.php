@@ -32,23 +32,17 @@ class CitiesController
         }
         return array_unique($result, SORT_STRING);
     }  
-    
-    function sortCities($array):array
-    {
-        natcasesort($array);
-        return $array;
-    }
-    public function getSortedCities()   
+
+    public function handleRequest()   
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST')
         {
-            $input = $_POST['textfield'] ?? '';
+            $input = $_POST['cities'] ?? '';
             $cities = $this->parseListOfCities($input);
+            sort($cities, SORT_STRING);
             include '../templates/HTML/index.html';
-            return $this->sortCities($cities);
+            return;
         }
         include '../templates/HTML/index.html';
-        return [];
-
     }
 }
