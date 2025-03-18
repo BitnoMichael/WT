@@ -1,5 +1,6 @@
 <?php
 
+require_once '/home/mihail/WT/src/Services/TemplateRenderer.php';
 class CitiesController
 {
     function parseListOfCities($str):array 
@@ -33,16 +34,21 @@ class CitiesController
         return array_unique($result, SORT_STRING);
     }  
 
-    public function handleRequest()   
+    public function handleRequest()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST')
         {
             $input = $_POST['cities'] ?? '';
             $cities = $this->parseListOfCities($input);
             sort($cities, SORT_STRING);
-            include '../templates/HTML/index.html';
+            $fp = fopen("/home/mihail/WT/templates/HTML/index.html", "r") or die("can't read stdin");
+            $template = fread($fp, filesize('/home/mihail/WT/templates/HTML/index.html'));
+            fclose($fp);
+            $tr = new TemplateRenderer($template);
+            $tr->assign('haveCities', true);
+            $tr->assign('cities', $cities);
+            echo $tr->render();
             return;
         }
-        include '../templates/HTML/index.html';
     }
 }

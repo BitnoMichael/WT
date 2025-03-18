@@ -16,14 +16,13 @@
             <input type="text" id="textfield" name="cities">
             <button type="submit">Сортировать</button>
         </form>
-        <?php if (!empty($cities)): ?>
-            <h2>Отсортированные города:</h2>
-            <ul>
-                <?php foreach ($cities as $city): ?>
-                    <li><?= htmlspecialchars($city) ?></li>
-                <?php endforeach; ?>
-            </ul>
-        <?php endif; ?>
+        {% if haveCities %}
+        <ul>
+        {% for city in cities %}
+            <li>{{ city }}</li>
+        {% endfor %}
+        <ul>
+        {% endif %}
     </main>
 </body>
 </html>
