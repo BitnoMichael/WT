@@ -2,13 +2,11 @@
 
 class TemplateRenderer
 {
-    protected $template;
     protected $vars = [];
     protected $collections = [];
 
-    public function __construct($template)
+    public function __construct()
     {
-        $this->template = $template;
     }
 
     public function assign($key, $value)
@@ -22,10 +20,17 @@ class TemplateRenderer
             $this->vars[$key] = $value;
         }
     }
-
-    public function render()
+    public function clear()
     {
-        $output = $this->template;
+        $this->collections = [];
+        $this->vars = [];
+    }
+
+    public function render($path)
+    {
+        $fp = fopen($path, "r") or die("can't read stdin");
+        $output= fread($fp, filesize($path));
+        fclose($fp);
 
         // Обработка условий
         $output = preg_replace_callback('/{% if (.*?) %}(.*?){% endif %}/s', function ($matches) {

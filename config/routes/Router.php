@@ -1,22 +1,24 @@
 <?php
 
-require 'RouteDefinitions.php';
+declare(strict_types=1);
+
+require_once 'RouteDefinitions.php';
 class Router
 {
     private array $routes = [];
 
-    public function addRoute(string $path, string $method, object $controller, string $action): void
+    public function addRoute($routeDefinition): void
     {
-        $this->routes[$path][$method] = new RouteDefinition($controller, $action);
+        $this->routes[] = $routeDefinition;
     }
 
     public function dispatch(string $path, string $method): void
     {
-        if (isset($this->routes[$path]) && isset($this->routes[$path][$method])) {
-            $routeDefinition = $this->routes[$path][$method];
-            $routeDefinition->execute(); // Выполняем маршрут
-        } else {
-            throw new Exception("Route for path {$path} not found.");
+        foreach ($this->routes as $route) {
+            if ($route->path == $path && $route->method == $method)
+            {            
+                $route->execute(); // Выполняем маршрут
+            }
         }
     }
 }

@@ -1,25 +1,21 @@
 <?php
+
+declare(strict_types=1);
+
 class RouteDefinition
 {
-    private object $controller;
-    private string $method;
+    public $routeDefinition;
+    public $method;
+    public $path;
+    public $controller;
 
-    public function __construct(object $controller, string $method)
+    public function __construct($path, $method, $controller, $action)
     {
+        $this->path = $path;
+        $this->action = $action;
         $this->controller = $controller;
         $this->method = $method;
     }
-
-    public function getController(): object
-    {
-        return $this->controller;
-    }
-
-    public function getMethod(): string
-    {
-        return $this->method;
-    }
-
     public function execute(): void
     {
         if (method_exists($this->controller, $this->method)) {

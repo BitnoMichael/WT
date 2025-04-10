@@ -1,15 +1,16 @@
 <?php
+declare(strict_types=1);
 
-require '../src/Controller/HomeController.php';
-require '../src/Controller/CitiesController.php';
-require '../config/routes/Router.php';
+require_once '../src/Controller/HomeController.php';
+require_once '../src/Controller/CitiesController.php';
+require_once '../config/routes/Router.php';
 
-$homeController = new HomeController();
-$citiesController = new CitiesController();
+$templateRenderer = new TemplateRenderer();
+$routes = new Routes($templateRenderer);
 $router = new Router();
-
-$router->addRoute('/', 'GET', $homeController, 'showMainPage'); 
-$router->addRoute('/', 'POST', $citiesController, 'handleRequest'); 
+foreach ($routes as $route) {
+    $router->addRoute($route);
+}
 
 try {
     $router->dispatch($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);
