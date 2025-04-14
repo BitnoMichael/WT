@@ -2,22 +2,41 @@
 Repository for university subject web technologies
 
 
-Project structure:
+```nginx
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
 
-my_project/   
-├── config/                 # Конфигурационные файлы приложения  
-│   └── routes/             # Определение маршрутов  
-├── public/                 # Публичная директория (доступна через веб)  
-│   └── index.php           # Главный входной файл  
-│   └── .htaccess           # Настройки для Apache (если используется)  
-├── src/                    # Исходный код приложения  
-│   ├── Controller/         # Контроллеры  
-│   ├── Entity/             # Сущности (модели)  
-│   ├── Repository/         # Репозитории для работы с базой данных  
-│   └── ...                 # Другие классы и папки  
-├── templates/              # Шаблоны для представлений  
-├── translations/           # Файлы локализации  
-├── var/                    # Временные файлы (кэш, логи и т.д.)  
-│   ├── cache/              # Кэшированные данные  
-│   └── log/                # Логи приложения  
-└── README.md               # Документация проекта  
+    root /home/mihail/WT;
+
+    index index.php;
+
+    server_name _;
+
+    location / {
+        # Перенаправление всех запросов на index.php
+        rewrite ^ /index.php last;
+    }
+
+    location /admin {
+        auth_basic "Administrator’s Area";
+        auth_basic_user_file /etc/apache2/.htpasswd;
+        rewrite ^ /index.php last;
+    }
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/var/run/php/php8.3-fpm.sock;
+    }
+    
+    location ~ \.css$ {
+  	add_header Content-Type text/css;
+    }
+    
+    location ~ \.js$ {
+    	types { }
+    	default_type application/javascript;
+    	add_header Content-Type application/javascript;
+    }
+}
+```
