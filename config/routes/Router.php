@@ -9,7 +9,7 @@ class Router
 
     public function addRoute($routeDefinition): void
     {
-        $this->routes[] = $routeDefinition;
+        array_push($this->routes, $routeDefinition);
     }
 
     public function dispatch(string $path, string $method): void

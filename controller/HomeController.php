@@ -1,6 +1,6 @@
 <?php
 
-require_once '/home/mihail/WT/src/Services/TemplateRenderer.php';
+require_once 'services/TemplateRenderer.php';
 class HomeController
 {
     private $trDI;
@@ -13,7 +13,7 @@ class HomeController
         if ($_SERVER['REQUEST_METHOD'] === 'GET')
         {
             $this->trDI->assign('haveCities', false);
-            echo $this->trDI->render('/home/mihail/WT/templates/HTML/index.html');
+            echo $this->trDI->render('public/templates/views/index.html');
             $this->trDI->clear();
         }
     }

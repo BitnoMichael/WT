@@ -1,14 +1,15 @@
 <?php
 
-require_once '/home/mihail/WT/src/Services/TemplateRenderer.php';
-require_once '/home/mihail/WT/src/Services/CitiesParser.php';
+require_once 'services/TemplateRenderer.php';
+require_once 'services/CitiesParser.php';
 class CitiesController
 {
     private $trDI;
-    private $citiesParser = new CitiesParser();
+    private $citiesParser;
     public function __construct($tr)
     {
         $this->trDI = $tr;
+        $this->citiesParser = new CitiesParser();
     }
 
     public function handleRequest()
@@ -21,7 +22,7 @@ class CitiesController
 
             $this->trDI->assign('haveCities', true);
             $this->trDI->assign('cities', $cities);
-            echo $this->trDI->render("/home/mihail/WT/templates/HTML/index.html");
+            echo $this->trDI->render("public/templates/views/index.html");
             $this->trDI->clear();
             return;
         }
