@@ -18,9 +18,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
     $rp->parsePostBody();
 else if ($_SERVER['REQUEST_METHOD'] == 'GET')
     $rp->parseQueryString($_SERVER['QUERY_STRING']);
-
-    // var_dump($_GET);
-    // var_dump($_SERVER);
 try {
     $router->dispatch(explode('?', $_SERVER['REQUEST_URI'])[0], $_SERVER['REQUEST_METHOD']);
 } catch (Exception $e) {

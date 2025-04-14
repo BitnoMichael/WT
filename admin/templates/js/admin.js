@@ -4,18 +4,17 @@ const storageInfoElement = document.getElementById('storageInfo');
 const modalContainer = document.getElementById('modalContainer');
 const fileInput = document.getElementById('fileInput');
 const status = document.getElementById('statusMessage');
-function setStatusMessage(status) {
-    status.innerHTML = status;
+function setStatusMessage(message) {
+    status.innerHTML = message;
 }
 
-let currentPath = '../public/templates/'; // Начальная директория
+let currentPath = 'public/templates/'; // Начальная директория
 
 document.getElementById('createFolder').addEventListener('click', createFolderModal);
 document.getElementById('uploadFile').addEventListener('click', () => fileInput.click());
 document.getElementById('refresh').addEventListener('click', loadFiles);
 
 fileInput.addEventListener('change', uploadFile);
-
 function updateCurrentPathDisplay() {
     currentPathElement.textContent = currentPath;
 }
@@ -40,7 +39,7 @@ function loadFiles() {
 function renderFiles(files) {
     fileListElement.innerHTML = '';
     
-    if (currentPath !== '../public/templates/') {
+    if (currentPath !== 'public/templates/') {
         const parentDirRow = document.createElement('div');
         parentDirRow.className = 'file-table-row';
         parentDirRow.innerHTML = `
@@ -85,12 +84,10 @@ function renderFiles(files) {
 
 function navigate(name) {
     if (name === '..') {
-        // Переход на уровень выше
         const pathParts = currentPath.split('/').filter(part => part !== '');
         pathParts.pop();
         currentPath = pathParts.join('/') + '/';
     } else {
-        // Переход в поддиректорию
         currentPath += name + '/';
     }
 
