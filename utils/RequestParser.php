@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 class RequestParser
 {
     public function parseQueryString(string $queryString)

@@ -1,15 +1,14 @@
 <?php
-
 declare(strict_types=1);
 
 class RouteDefinition
 {
-    public $action;
-    public $method;
-    public $path;
-    public $controller;
+    public string $action;
+    public string $method;
+    public string $path;
+    public object $controller;
 
-    public function __construct($path, $method, $controller, string $action)
+    public function __construct(string $path, string $method, object $controller, string $action)
     {
         $this->path = $path;
         $this->action = $action;

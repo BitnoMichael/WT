@@ -1,14 +1,14 @@
 <?php
-
+declare(strict_types=1);
 require_once 'services/TemplateRenderer.php';
 class HomeController
 {
-    private $trDI;
-    public function __construct($tr)
+    private TemplateRenderer $trDI;
+    public function __construct(TemplateRenderer $tr)
     {
         $this->trDI = $tr;
     }
-    public function showMainPage()
+    public function showMainPage(): void
     {
         if ($_SERVER['REQUEST_METHOD'] === 'GET')
         {

@@ -1,15 +1,11 @@
 <?php
-
+declare(strict_types=1);
 class TemplateRenderer
 {
-    protected $vars = [];
-    protected $collections = [];
+    protected array $vars = [];
+    protected array $collections = [];
 
-    public function __construct()
-    {
-    }
-
-    public function assign($key, $value)
+    public function assign(string $key, string|array $value): void
     {
         if (is_array($value))
         {
@@ -20,13 +16,13 @@ class TemplateRenderer
             $this->vars[$key] = $value;
         }
     }
-    public function clear()
+    public function clear(): void
     {
         $this->collections = [];
         $this->vars = [];
     }
 
-    public function render($path)
+    public function render($path): string
     {
         $fp = fopen($path, "r") or die("can't read stdin");
         $output= fread($fp, filesize($path));
@@ -64,7 +60,7 @@ class TemplateRenderer
         return $output;
     }
 
-    protected function renderString($string)
+    protected function renderString(string $string): string
     {
         foreach ($this->vars as $key => $value) {
             $placeholder = '{{ ' . $key . ' }}';
@@ -73,7 +69,7 @@ class TemplateRenderer
         return $string;
     }
 
-    protected function evaluateCondition($condition)
+    protected function evaluateCondition(string $condition): bool
     {
         return !empty($this->vars[$condition]);
     }

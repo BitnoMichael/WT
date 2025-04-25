@@ -1,11 +1,11 @@
 <?php
-
+declare(strict_types=1);
 class AdminService
 {
-    public function getFiles(): array {
+    public function getFiles(): array 
+    {
         header('Content-Type: application/json'); 
         
-        $baseDir = 'public/templates/'; 
         $requestedPath = isset($_GET['path']) ? $_GET['path'] : '';
         $fullPath = realpath($requestedPath);
 
@@ -84,7 +84,7 @@ class AdminService
         $this->sendJsonResponse(['success' => true]);
     }
 
-    public function getFile()
+    public function getFile(): void
     {
         $filePath = $_GET['path'] ?? null;
 
@@ -111,7 +111,7 @@ class AdminService
         readfile($filePath);
     }
     
-    public function deleteFile()
+    public function deleteFile(): void
     {
         $path = $_POST['path'] ?? null;
         $type = $_POST['type'] ?? 'file'; 
@@ -149,7 +149,7 @@ class AdminService
         $this->sendJsonResponse(['success' => true]);
     }
 
-    public function mkDir()
+    public function mkDir(): void
     {
         $path = $_POST['path'] ?? null;
         $name = $_POST['name'] ?? null;

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 require_once './config/routes/Router.php';
 require_once './config/routes/Routes.php';
-require_once './services/RequestParser.php';
+require_once './utils/RequestParser.php';
 
 $templateRenderer = new TemplateRenderer();
 $routes = new Routes($templateRenderer);
