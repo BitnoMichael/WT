@@ -28,14 +28,27 @@ class TemplateRenderer
         $output= fread($fp, filesize($path));
         fclose($fp);
 
+        // Подстановка файла
+        $output = preg_replace_callback('/{% file (.*?) %}/s', function ($matches) {
+            $path = trim($matches[1]);
+            $fp = fopen($path, "r") or die("can't read stdin");
+            $output= fread($fp, filesize($path));
+            fclose($fp);
+            return $output;
+        }, $output);
+
         // Обработка условий
-        $output = preg_replace_callback('/{% if (.*?) %}(.*?){% endif %}/s', function ($matches) {
+        $output = preg_replace_callback('/{% if (.*?) %}(.*?){% else %}(.*?){% endif %}/s', function ($matches) {
             $condition = trim($matches[1]);
             $content = $matches[2];
+            $elseContent = $matches[3];
             if ($this->evaluateCondition($condition)) {
                 return $content;
             }
-            return '';
+            else
+            {
+                return $elseContent;
+            }
         }, $output);
 
         // Обработка циклов

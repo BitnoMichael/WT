@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-require_once 'services/TemplateRenderer.php';
+require_once 'utils/TemplateRenderer.php';
 class HomeController
 {
     private TemplateRenderer $trDI;
