@@ -5,7 +5,7 @@ class TemplateRenderer
     protected array $vars = [];
     protected array $collections = [];
 
-    public function assign(string $key, string|array $value): void
+    public function assign(string $key, mixed $value): void
     {
         if (is_array($value))
         {
@@ -51,6 +51,18 @@ class TemplateRenderer
             }
         }, $output);
 
+        $output = preg_replace_callback('/{% if (.*?) %}(.*?){% endif %}/s', function ($matches) {
+            $condition = trim($matches[1]);
+            $content = $matches[2];
+            if ($this->evaluateCondition($condition)) {
+                return $content;
+            }
+            else
+            {
+                return '';
+            }
+        }, $output);
+
         // Обработка циклов
         $output = preg_replace_callback('/{% for (.*?) in (.*?) %}(.*?){% endfor %}/s', function ($matches) {
             $item = trim($matches[1]);
@@ -58,9 +70,35 @@ class TemplateRenderer
             $content = $matches[3];
 
             $result = '';
-            if (isset($this->collections[$array])) {
-                foreach ($this->collections[$array] as $value) {
-                    $this->assign($item, $value);
+            if (isset($this->collections[$array])) 
+            {
+                foreach ($this->collections[$array] as $value) 
+                {
+                    if (is_object($value))
+                    {
+                        $objectPropertiesKeys = array_keys(get_object_vars($value));
+                        $objectPropertiesValues = get_object_vars($value);
+
+                        foreach ($objectPropertiesKeys as $properyName) 
+                        {
+                            $this->assign($item . '.' . $properyName, $objectPropertiesValues[$properyName]);
+                        }
+                    }
+                    else if (is_array($value))
+                    {
+                        foreach (array_keys($value) as $properyName) 
+                        {
+                            $this->assign($item . '.' . $properyName, $value[$properyName]);
+                        }
+                    }
+                    else if (is_string($value))
+                    {
+                        $this->assign($item, $value);
+                    }
+                    else
+                    {
+                        die("WRONG TEMPLATE ARGUMENT");
+                    }
                     $result .= $this->renderString($content);
                 }
             }
@@ -76,8 +114,8 @@ class TemplateRenderer
     protected function renderString(string $string): string
     {
         foreach ($this->vars as $key => $value) {
-            $placeholder = '{{ ' . $key . ' }}';
-            $string = str_replace($placeholder, htmlspecialchars($value, ENT_QUOTES, 'UTF-8'), $string);
+            $placeholder = '{% ' . $key . ' %}';
+            $string = str_replace($placeholder, htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8'), $string);
         }
         return $string;
     }

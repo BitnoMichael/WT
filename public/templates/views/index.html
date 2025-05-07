@@ -2,27 +2,69 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Достопримечательности</title>
+    <link rel="stylesheet" href="public/templates/css/style.css">
 </head>
 <body>
     <header>
-        <h1>WT labs</h1>
+        <div class="header-container">
+            <a href="newRecordForm.html" class="add-record">+</a>
+            <h1>Достопримечательности</h1>
+        </div>
     </header>
     <main>
-        <h2>Lab4</h2>
-        <form method="post">
-            <label for="textfield">Введите имя</label>
-            <input type="text" id="textfield" name="cities">
-            <label for="textfield">Введите email</label>
-            <input type="text" id="textfield" name="cities">
-            <button type="submit">Валидировать</button>
-        </form>
-        {% if correctEmail %}
-        <b>email валиден</b>
-        {% else %}
-        <b>email не валиден</b>
-        {% endif %}
+        <aside>
+            <nav>
+                <ul>
+                    {% for attraction in attractions %}
+                    <li>
+                        <div class="attraction-container">
+                            <div class="field hidden">
+                                <label for="attraction_id">ID:</label>
+                                <p id="attraction_id">{% attraction.attraction_id %}</p>
+                            </div>
+                            <div class="field hidden">
+                                <label for="user_id">User ID:</label>
+                                <p id="attraction_id">{% attraction.user_id %}</p>
+                            </div>
+                            <div class="field">
+                                <label for="name">Название:</label>
+                                <p id="name">{% attraction.name %}</p>
+                            </div>
+                            <div class="field">
+                                <label for="description">Описание:</label>
+                                <p id="description">{% attraction.description %}</p>
+                            </div>
+                            <div class="field">
+                                <label for="location">Местоположение:</label>
+                                <p id="location">{% attraction.location %}</p>
+                            </div>
+                            <div class="field">
+                                <label for="created_at">Дата создания:</label>
+                                <p id="created_at">{% attraction.created_at %}</p>
+                            </div>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </nav>
+        </aside>
+        <hr>
     </main>
+    <footer>
+        <ul>
+            <li><a href="https://vk.com/m.bitno" target="_blank" class="link">Мой VK</a></li>
+            <li><a href="https://t.me/mishanyastylee" target="_blank" class="link">Мой Telegram</a></li>
+        </ul>
+    </footer>
+    <div class="arrow left-arrow">
+        <img src="../assets/img/arrow.png">
+    </div>
+    <div class="arrow right-arrow">
+        <img src="../assets/img/arrow.png" style="transform: scaleX(-1);">
+    </div>
+    <script src="./JS/script.js" type="module"></script>
 </body>
 </html>

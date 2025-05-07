@@ -11,13 +11,14 @@ class Router
         array_push($this->routes, $routeDefinition);
     }
 
-    public function dispatch(string $path, string $method): void
+    public function dispatch(string $path, string $method): string
     {
         foreach ($this->routes as $route) {
             if ($route->path == $path && $route->method == $method)
             {            
-                $route->execute(); // Выполняем маршрут
+                return $route->execute(); // Выполняем маршрут
             }
         }
+        return '';
     }
 }

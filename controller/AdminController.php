@@ -2,49 +2,54 @@
 declare(strict_types=1);
 require_once 'utils/TemplateRenderer.php';
 require_once 'services/AdminService.php';
+require_once 'src/repository/Attractions.php';
+require_once 'src/repository/Reviews.php';
+require_once 'src/repository/Users.php';
+
 class AdminController
 {
     private TemplateRenderer $trDI;
     private object $adminService;
-    public function __construct(TemplateRenderer $tr)
+    private DB $db;
+    public function __construct(TemplateRenderer $tr, DB $dataBase) 
     {
         $this->trDI = $tr;
         $this->adminService = new AdminService();
+        $this->db = $dataBase;
     }
 
-    public function showAdminFileManager(): void
+    public function showAdminFileManager(): string
     {
-        echo $this->trDI->render("admin/templates/views/admin.html");
-        return;
+        return $this->trDI->render("admin/templates/views/admin.html");
     }
 
-    public function getFilesInfo():void 
+    public function getFilesInfo(): string
     {
         header('Content-Type: application/json');
-        echo json_encode($this->adminService->getFiles());
+        return json_encode($this->adminService->getFiles());
     }
-    public function getFileContent():void
+    public function getFileContent(): string
     {
         header('Content-Type: application/json');
-        echo $this->adminService->getFileContent();
+        return $this->adminService->getFileContent();
     }
     
-    public function saveFile():void
+    public function saveFile(): string
     {
-        $this->adminService->saveFile();
+        return $this->adminService->saveFile();
     }
 
-    public function getFile():void
+    public function getFile(): string
     {
-        $this->adminService->getFile();
+        return $this->adminService->getFile();
     }
     
-    public function deleteFile():void
+    public function deleteFile(): string
     {
-        $this->adminService->deleteFile();
+        return $this->adminService->deleteFile();
     }
-    public function mkDir():void
+    public function mkDir(): string
     {
-        $this->adminService->mkDir();
+        return $this->adminService->mkDir();
     }
 }

@@ -15,10 +15,10 @@ class RouteDefinition
         $this->controller = $controller;
         $this->method = $method;
     }
-    public function execute(): void
+    public function execute(): string
     {
         if (method_exists($this->controller, $this->action)) {
-            call_user_func([$this->controller, $this->action]);
+            return call_user_func([$this->controller, $this->action]);
         } else {
             throw new Exception("Method {$this->method} does not exist in controller " . get_class($this->controller));
         }
