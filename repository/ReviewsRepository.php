@@ -1,7 +1,8 @@
 <?php
 declare(strict_types=1);
+require_once 'entity/Review.php';
 
-class Reviews {
+class ReviewsRepository {
     private mysqli $conn;
     public function getLength(): int
     {
@@ -25,11 +26,11 @@ class Reviews {
         return $stmt->execute();
     }
 
-    public function read(int $review_id): ?array {
+    public function read(int $review_id): Review {
         $stmt = $this->conn->prepare("SELECT * FROM reviews WHERE review_id = ?");
         $stmt->bind_param("i", $review_id);
         $stmt->execute();
-        return $stmt->get_result()->fetch_assoc();
+        return new Review($stmt->get_result()->fetch_assoc());
     }
 
     public function update(int $review_id, int $attraction_id, int $user_id, int $rating, string $comment): bool {

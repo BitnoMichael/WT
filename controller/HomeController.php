@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 require_once 'utils/TemplateRenderer.php';
-require_once 'src/repository/DB.php';
-require_once 'src/repository/Attractions.php';
-require_once 'src/repository/Reviews.php';
-require_once 'src/repository/Users.php';
+require_once 'repository/DB.php';
+require_once 'repository/AttractionsRepository.php';
+require_once 'repository/ReviewsRepository.php';
+require_once 'repository/UsersRepository.php';
 
 class HomeController
 {
@@ -23,10 +23,7 @@ class HomeController
             for ($i = 1; $i <= $this->db->getAttractions()->getLength(); $i++)
             {
                 $attraction = $this->db->getAttractions()->read($i);
-                if (is_array($attraction))
-                {
-                    $attractions[] = $attraction;
-                }
+                $attractions[] = $attraction;
             }
             $this->trDI->assign('attractions', $attractions);
             $answer= $this->trDI->render('public/templates/views/index.html');

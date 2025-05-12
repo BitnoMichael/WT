@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация</title>
+    <link rel="stylesheet" href="/public/templates/css/enterSite.css">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Регистрация</h1>
+        <form id="registrationForm" action="/register/" method="post">
+            <div class="form-group">
+                <label for="username">Имя пользователя:</label>
+                <input type="text" id="username" name="username" required>
+                <span class="error" id="usernameError"></span>
+            </div>
+            <div class="form-group">
+                <label for="password">Пароль:</label>
+                <input type="password" id="password" name="password" required>
+                <span class="error" id="passwordError"></span>
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">Подтвердите пароль:</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" required>
+                <span class="error" id="confirmPasswordError"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="rememberMe">
+                    <input type="checkbox" id="rememberMe" name="rememberMe"> Запомнить меня
+                </label>
+            </div>
+
+            <div class="form-group">
+                <div class="g-recaptcha" data-sitekey="6Lc70jUrAAAAAIUn_dY_T1crqM5g21g3FakYnYI_"></div>
+                <span class="error" id="captchaError"></span>
+            </div>
+
+            <button type="submit">Зарегистрироваться</button>
+            <p>Уже есть аккаунт? <a href="/login/">Войти</a></p>
+        </form>
+    </div>
+    <script src="/public/templates/js/enterSite.js"></script>
+</body>
+</html>

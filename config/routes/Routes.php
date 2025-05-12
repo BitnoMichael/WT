@@ -2,21 +2,29 @@
 declare(strict_types=1);
 require_once 'controller/HomeController.php';
 require_once 'controller/AdminController.php';
-require_once 'src/repository/DB.php';
+require_once 'controller/EnterSiteController.php';
+require_once 'repository/DB.php';
 
 class Routes
 {
     public array $routes = [];
     public function __construct(TemplateRenderer $tr)
     { 
+        //сделать через require_once
         include './.db/DBInfo.php';
         $db = new DB($conn);
+        //скрипт автоматического добавления
         $homeController = new HomeController($tr, $db);
         $adminController = new AdminController($tr, $db);
+        $enterSiteController = new EnterSiteController($tr, $db);
 
         $this->routes = [
             new RouteDefinition('/', 'GET', $homeController, 'showMainPage'),
             new RouteDefinition('/', 'POST', $homeController, 'validateEmail'),
+            new RouteDefinition('/register/', 'GET', $enterSiteController, 'showRegisterPage'),
+            new RouteDefinition('/login/', 'GET', $enterSiteController, 'showSignInPage'),
+            new RouteDefinition('/register/', 'POST', $enterSiteController, 'register'),
+            new RouteDefinition('/login/', 'POST', $enterSiteController, 'signIn'),
             new RouteDefinition('/admin/', 'GET', $adminController, 'showAdminFileManager'),
             new RouteDefinition('/admin/api/files', 'GET', $adminController, 'getFilesInfo'),
             new RouteDefinition('/admin/api/fileContent', 'GET', $adminController, 'getFileContent'),

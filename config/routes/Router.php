@@ -6,7 +6,7 @@ class Router
 {
     private array $routes = [];
 
-    public function addRoute($routeDefinition): void
+    public function addRoute(RouteDefinition $routeDefinition): void
     {
         array_push($this->routes, $routeDefinition);
     }
@@ -14,9 +14,9 @@ class Router
     public function dispatch(string $path, string $method): string
     {
         foreach ($this->routes as $route) {
-            if ($route->path == $path && $route->method == $method)
+            if ($route->getPath() === $path && $route->getMethod() === $method)
             {            
-                return $route->execute(); // Выполняем маршрут
+                return $route->execute();
             }
         }
         return '';

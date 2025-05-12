@@ -1,7 +1,8 @@
 <?php
 declare(strict_types=1);
+require_once 'entity/Attraction.php';
 
-class Attractions {
+class AttractionsRepository {
     private mysqli $conn;
     public function getLength(): int
     {
@@ -25,11 +26,11 @@ class Attractions {
         return $stmt->execute();
     }
 
-    public function read(int $attraction_id): ?array {
-        $stmt = $this->conn->prepare("SELECT * FROM attractions WHERE attraction_id = ?");
+    public function read(int $attraction_id): Attraction {
+        $stmt = $this->conn->prepare("SELECT * FROM attractions WHERE id = ?");
         $stmt->bind_param("i", $attraction_id);
         $stmt->execute();
-        return $stmt->get_result()->fetch_assoc();
+        return new Attraction($stmt->get_result()->fetch_assoc());
     }
 
     public function update(int $attraction_id, int $user_id, string $name, string $description, string $location): bool {
@@ -39,7 +40,7 @@ class Attractions {
     }
 
     public function delete(int $attraction_id): bool {
-        $stmt = $this->conn->prepare("DELETE FROM attractions WHERE attraction_id = ?");
+        $stmt = $this->conn->prepare("DELETE FROM attractions WHERE id = ?");
         $stmt->bind_param("i", $attraction_id);
         return $stmt->execute();
     }

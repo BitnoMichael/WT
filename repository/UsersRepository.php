@@ -1,7 +1,8 @@
 <?php
 declare(strict_types=1);
+require_once 'entity/User.php';
 
-class Users {
+class UsersRepository {
     private mysqli $conn;
     public function getLength(): int
     {
@@ -18,17 +19,21 @@ class Users {
         $this->conn = $db;
     }
 
-    public function create(string $username, string $email, string $password_hash): bool {
-        $stmt = $this->conn->prepare("INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)");
-        $stmt->bind_param("sss", $username, $email, $password_hash);
+    public function create(string $username, string $password_hash, string $salt, bool $rememberMe): bool {
+        $stmt = $this->conn->prepare("INSERT INTO users (username, password_hash, salt, remember_me) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("sss", $username, $password_hash, $salt, $rememberMe);
         return $stmt->execute();
     }
 
-    public function read(int $user_id): ?array {
-        $stmt = $this->conn->prepare("SELECT * FROM users WHERE user_id = ?");
-        $stmt->bind_param("i", $user_id);
+    public function read(string $name): ?User {
+        $stmt = $this->conn->prepare("SELECT * FROM users WHERE username = ?");
+        $stmt->bind_param("s", $name);
         $stmt->execute();
-        return $stmt->get_result()->fetch_assoc();
+        $row = $stmt->get_result()->fetch_assoc();
+        if ($row == null)
+            return null;
+        else
+            return new User($row);
     }
 
     public function update(int $user_id, string $username, string $email, string $password_hash): bool {

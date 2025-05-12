@@ -27,13 +27,15 @@ class RequestParser
     }
     public function parsePostBody()
     {
+        if ($_POST !== null)
+            return;
         $json = file_get_contents('php://input');
 
         $_POST = json_decode($json, true);
 
         if ($_POST === null && json_last_error() !== JSON_ERROR_NONE) {
             http_response_code(400);
-            header('Content-Type: application/json');
+            header('Content-Type: html/text');
             echo json_encode(['error' => 'Некорректный JSON.']);
             return;
         }

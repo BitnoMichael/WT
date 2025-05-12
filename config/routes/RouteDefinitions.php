@@ -3,10 +3,22 @@ declare(strict_types=1);
 
 class RouteDefinition
 {
-    public string $action;
-    public string $method;
-    public string $path;
-    public object $controller;
+    private string $action;
+    public function getAction(): string {
+        return $this->action;
+    }
+    private string $method;
+    public function getMethod(): string {
+        return $this->method;
+    }
+    private string $path;
+    public function getPath(): string {
+        return $this->path;
+    }
+    private object $controller;
+    public function getController(): object {
+        return $this->controller;
+    }
 
     public function __construct(string $path, string $method, object $controller, string $action)
     {
