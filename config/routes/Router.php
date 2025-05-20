@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
-
 require_once 'RouteDefinitions.php';
+require_once './.constants/Constants.php';
 class Router
 {
     private array $routes = [];

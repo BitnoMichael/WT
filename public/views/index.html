@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Достопримечательности</title>
-    <link rel="stylesheet" href="public/templates/css/style.css">
+    <link rel="stylesheet" href="public/css/style.css">
 </head>
 <body>
     <header>
@@ -23,23 +23,23 @@
                         <div class="attraction-container">
                             <div class="field hidden">
                                 <label for="attraction_id">ID:</label>
-                                <p id="attraction_id">{% attraction.id %}</p>
+                                <p id="attraction_id">{% attraction.getID() %}</p>
                             </div>
                             <div class="field">
                                 <label for="name">Название:</label>
-                                <p id="name">{% attraction.name %}</p>
+                                <p id="name">{% attraction.getName() %}</p>
                             </div>
                             <div class="field">
                                 <label for="description">Описание:</label>
-                                <p id="description">{% attraction.description %}</p>
+                                <p id="description">{% attraction.getDescription() %}</p>
                             </div>
                             <div class="field">
                                 <label for="location">Местоположение:</label>
-                                <p id="location">{% attraction.location %}</p>
+                                <p id="location">{% attraction.getLocation() %}</p>
                             </div>
                             <div class="field">
                                 <label for="created_at">Дата создания:</label>
-                                <p id="created_at">{% attraction.createdAt %}</p>
+                                <p id="created_at">{% attraction.getDateOfCreation() %}</p>
                             </div>
                         </div>
                     </li>
@@ -61,6 +61,6 @@
     <div class="arrow right-arrow">
         <img src="../assets/img/arrow.png" style="transform: scaleX(-1);">
     </div>
-    <script src="./JS/script.js" type="module"></script>
+    <script src="/public/JS/script.js" type="module"></script>
 </body>
 </html>

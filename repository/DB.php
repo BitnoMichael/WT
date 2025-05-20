@@ -2,6 +2,7 @@
 require_once 'repository/AttractionsRepository.php';
 require_once 'repository/ReviewsRepository.php';
 require_once 'repository/UsersRepository.php';
+require_once './.constants/Constants.php';
 
 class DB
 {

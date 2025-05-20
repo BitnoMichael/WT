@@ -5,6 +5,7 @@ require_once 'repository/DB.php';
 require_once 'repository/AttractionsRepository.php';
 require_once 'repository/ReviewsRepository.php';
 require_once 'repository/UsersRepository.php';
+require_once './.constants/Constants.php';
 
 class HomeController
 {
@@ -26,7 +27,7 @@ class HomeController
                 $attractions[] = $attraction;
             }
             $this->trDI->assign('attractions', $attractions);
-            $answer= $this->trDI->render('public/templates/views/index.html');
+            $answer= $this->trDI->render('public/views/index.html');
             $this->trDI->clear();
         }
         return $answer;

@@ -6,6 +6,8 @@ require_once 'repository/AttractionsRepository.php';
 require_once 'repository/ReviewsRepository.php';
 require_once 'repository/UsersRepository.php';
 require_once 'services/EnterSiteService.php';
+require_once 'entity/User.php';
+require_once './.constants/Constants.php';
 class EnterSiteController
 {
     private EnterSiteService $service;
@@ -19,14 +21,14 @@ class EnterSiteController
     }
     public function showSignInPage(): string
     {
-        $answer= $this->trDI->render('public/templates/views/signIn.html');
+        $answer= $this->trDI->render('public/views/signIn.html');
         $this->trDI->clear();
         return $answer;
     }
     
     public function showRegisterPage(): string
     {
-        $answer= $this->trDI->render('public/templates/views/registration.html');
+        $answer= $this->trDI->render('public/views/registration.html');
         $this->trDI->clear();
         return $answer;
     }
@@ -38,12 +40,32 @@ class EnterSiteController
             $this->service->addNewUser();
             $this->service->enterToSite();
             header("Content-Type: text/html; charset=utf-8");
-            header("Location: /");
+            header("Location: /register/verify/");
         }
         else {
             echo 'user not correct';
         }
         return "";
+    }
+    public function showVerifyPage(): string
+    {
+
+        $verificationToken = bin2hex(random_bytes(16));
+        $verificationLink = "http://localhost/register/api/verify?token=$verificationToken";
+        $this->db->getUsers()->updateToken($_SESSION['user_id'], $verificationToken);
+        $this->trDI->assign("verificationLink", $verificationLink);
+
+        $this->service->sendVerificationEmail($this->trDI->render("public/views/confirmRegister.mjml"));
+        $answer = $this->trDI->render('public/views/verification.html');
+        $this->trDI->clear();
+        return $answer;
+    }
+    public function verifyUser(): string
+    {
+        $curUser = $this->db->getUsers()->readByID($_SESSION['user_id']);
+        if ($curUser->getToken() === $_GET['token'])
+            $this->db->getUsers()->updateIsVerified($_SESSION['user_id'], true);
+        return $this->showVerifyPage();
     }
     public function signIn(): string
     {

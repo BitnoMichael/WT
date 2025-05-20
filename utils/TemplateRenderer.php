@@ -1,5 +1,7 @@
 <?php
 declare(strict_types=1);
+require_once './.constants/Constants.php';
+
 class TemplateRenderer
 {
     protected array $vars = [];
@@ -83,6 +85,16 @@ class TemplateRenderer
                         {
                             $this->assign($item . '.' . $properyName, $objectPropertiesValues[$properyName]);
                         }
+
+                        $methods = get_class_methods($value);
+
+                        foreach ($methods as $method)
+                        {
+                            $reflection = new ReflectionMethod($value, $method);
+                            if ($reflection->getNumberOfRequiredParameters() > 0 || str_starts_with($method, "__construct"))
+                                continue;
+                            $this->assign($item . '.' . $method . '()', $reflection->invoke($value));
+                        }
                     }
                     else if (is_array($value))
                     {
@@ -104,9 +116,20 @@ class TemplateRenderer
             }
             return $result;
         }, $output);
-
+        
         // Обработка переменных
         $output = $this->renderString($output);
+
+        //mjml
+        $output = preg_replace_callback('/{% mjml %}(.*?){% endmjml %}/s', function ($matches) {
+            $content = "'" . trim($matches[1]) . "'";
+            // header("Content-Type: text/plain; charset=utf-8");
+            // echo $content;
+            // die;
+            $command = "echo " . $content . " | mjml -i -";
+            $html = shell_exec($command);
+            return trim($html);
+        }, $output);
 
         return $output;
     }

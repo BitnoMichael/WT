@@ -1,5 +1,7 @@
 <?php
 declare(strict_types=1);
+
+require_once './.constants/Constants.php';
 require_once 'entity/Review.php';
 
 class ReviewsRepository {

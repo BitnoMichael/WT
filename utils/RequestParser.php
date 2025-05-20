@@ -1,5 +1,7 @@
 <?php
 declare(strict_types=1);
+require_once './.constants/Constants.php';
+
 class RequestParser
 {
     public function parseQueryString(string $queryString)
@@ -27,10 +29,9 @@ class RequestParser
     }
     public function parsePostBody()
     {
-        if ($_POST !== null)
+        if ($_POST !== null && count($_POST) !== 0)
             return;
         $json = file_get_contents('php://input');
-
         $_POST = json_decode($json, true);
 
         if ($_POST === null && json_last_error() !== JSON_ERROR_NONE) {

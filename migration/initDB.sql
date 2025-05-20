@@ -1,12 +1,16 @@
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) NOT NULL unique,
     username VARCHAR(50) NOT NULL unique,
     password_hash VARCHAR(255) NOT NULL,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     remember_me BOOLEAN NOT NULL DEFAULT FALSE,
+    is_verified BOOLEAN NOT NULL DEFAULT FALSE,
     last_login DATETIME NULL,
-    salt VARCHAR(32),
-    INDEX (username)
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    salt VARCHAR(32) NOT NULL,
+    token VARCHAR(32) NULL,
+    INDEX (username),
+    INDEX (email)
 );
 
 CREATE TABLE attractions (

@@ -1,6 +1,8 @@
 <?php
 require_once 'repository/UsersRepository.php';
 require_once 'entity/User.php';
+require_once './.constants/Constants.php';
+use PHPMailer\PHPMailer\PHPMailer;
 
 class EnterSiteService {
     private UsersRepository $usersRepository;
@@ -35,7 +37,7 @@ class EnterSiteService {
     }
     public function isNewUserCorrect(): bool
     {
-        return $this->usersRepository->read(name: $_POST['username']) == null
+        return $this->usersRepository->read(name: $_POST['username']) === null
                 &&  $_POST['password'] === $_POST['confirmPassword']
                 && $this->isCaptchaEntered();
     }
@@ -44,15 +46,42 @@ class EnterSiteService {
     {
         $user = $this->usersRepository->read(name: $_POST['username']);
         return $user != null
-                && $user->getPasswordHash() === crypt($_POST['password'] . $user->getSalt(), '$2y$10$10' . $user->getSalt());
+                && $user->getPasswordHash() === hash("sha256", $_POST['password'] . $user->getSalt());
     }
     public function addNewUser(): void
     {
         $salt = $this->getRandomSalt();
-        $this->usersRepository->create( $_POST['username'], crypt($_POST['password'] . $salt, '$2y$10$10' . $salt), $salt, isset($_POST['rememberMe']));
+        $this->usersRepository->create( $_POST['username'], hash("sha256", $_POST['password'] . $salt), $salt, isset($_POST['rememberMe']), $_POST['email']);
     }
     public function enterToSite(): void
     {
         $_SESSION['user_id'] = $this->usersRepository->read($_POST['username'])?->getID();
+    }
+
+    public function sendVerificationEmail(string $emailContent): void
+    {
+        $user = $this->usersRepository->readByID($_SESSION['user_id']);
+
+        $receiver = $user->getEmail();
+
+        $mail = new PHPMailer(true);
+
+        $mail->isSMTP();
+        $mail->Host = 'smtp.mail.ru'; 
+        $mail->SMTPAuth = true; 
+        $mail->Username = Constants::SERVER_EMAIL; 
+        $mail->Password = Constants::EMAIL_PASSWORD; 
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587; 
+        // Получатели
+        $mail->setFrom(Constants::SERVER_EMAIL, 'Site service'); // Отправитель
+        $mail->addAddress($receiver, 'New user'); // Получатель
+
+        $mail->isHTML(true); 
+        $mail->Subject = 'Verification'; 
+        $mail->Body    = $emailContent; 
+        $mail->AltBody = '';
+
+        $mail->send();
     }
 }
